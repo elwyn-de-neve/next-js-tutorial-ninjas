@@ -7,20 +7,20 @@ import { createClient } from "contentful";
 
 
 export async function getStaticProps() {
-    const client = createClient({
+    const client = createClient( {
         space: process.env.CONTENTFUL_SPACE_ID,
         accessToken: process.env.CONTENTFUL_ACCESS_KEY
-    })
+    } )
 
-    const response = await client.getEntries({ content_type: 'ninjas' })
+    const response = await client.getEntries( { content_type: 'ninjas' } )
 
     return {
-        props: { ninjas: response }
+        props: { ninjas: response.items }
     }
 }
 
-export default function Home({ ninjas }) {
-    console.log(ninjas)
+export default function Home( { ninjas } ) {
+    console.log( ninjas )
     return (
         <>
             <Head>
@@ -28,17 +28,8 @@ export default function Home({ ninjas }) {
                 <meta name="keywords" content="ninjas"/>
             </Head>
             <div>
-                <h1 className={ styles.title }>Homepage</h1>
-                <p className={ styles.text }>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consectetur
-                    cupiditate maxime quas. Adipisci
-                    aliquam corporis, est, eum impedit labore laborum nam quis ratione rerum sed veritatis, vero
-                    voluptatem
-                    voluptates!</p>
-                <p className={ styles.text }>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consectetur
-                    cupiditate maxime quas. Adipisci
-                    aliquam corporis, est, eum impedit labore laborum nam quis ratione rerum sed veritatis, vero
-                    voluptatem
-                    voluptates!</p>
+                <h1 key={ ninjas[0].sys.id } className={ styles.title }>{ ninjas[0].fields.title }</h1>
+                {/*<p key={ ninjas[0].sys.id } className={ styles.text }>{ ninjas[0].fields.content }</p>*/}
                 <Link href="/ninjas"><a className={ styles.btn }>See Ninja Listing</a></Link>
             </div>
         </>
