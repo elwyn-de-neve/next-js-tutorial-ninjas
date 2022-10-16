@@ -2,8 +2,25 @@ import Head from "next/head";
 import React from "react";
 import Link from "next/link";
 import styles from "../styles/Home.module.css"
+import axios from "axios";
+import { createClient } from "contentful";
 
-export default function Home() {
+
+export async function getStaticProps() {
+    const client = createClient({
+        space: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_KEY
+    })
+
+    const response = await client.getEntries({ content_type: 'ninjas' })
+
+    return {
+        props: { ninjas: response }
+    }
+}
+
+export default function Home({ ninjas }) {
+    console.log(ninjas)
     return (
         <>
             <Head>
